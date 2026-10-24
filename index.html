@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}</style>
+<title>AI 교실 설문 결과</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600&display=swap">
+<style>
+  /* 휴대폰 한 손 스크롤: 한눈에 보기 → 질문별 결과(한 칸 = 한 사람) → 정한 일정 → 함께 보는 자료 → 개인정보 약속 */
+  :root {
+    --bg: #FAF7F2;
+    --surface: #FFFFFF;
+    --ink: #1F2A37;
+    --muted: #5E6672;
+    --line: #E6DFD3;
+    --accent: #2A6F61;
+    --accent-soft: #EEF2EF;
+    --heard: #8DBDB1;
+    --empty: #ECE6DB;
+    --dash: #9C9384;
+    --font-body: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    --font-display: "Noto Serif KR", "AppleMyungjo", "Batang", serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15191E;
+      --surface: #1D2228;
+      --ink: #ECE7DF;
+      --muted: #A6ADB6;
+      --line: #2E353D;
+      --accent: #6DBBA9;
+      --accent-soft: #1E2D29;
+      --heard: #3F7466;
+      --empty: #2A3037;
+      --dash: #7A838E;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15191E;
+    --surface: #1D2228;
+    --ink: #ECE7DF;
+    --muted: #A6ADB6;
+    --line: #2E353D;
+    --accent: #6DBBA9;
+    --accent-soft: #1E2D29;
+    --heard: #3F7466;
+    --empty: #2A3037;
+    --dash: #7A838E;
+    color-scheme: dark;
+  }
+
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.65; word-break: keep-all; overflow-wrap: anywhere; }
+  .wrap {
+    max-width: 38rem;
+    margin: 0 auto;
+    padding-block: 28px 56px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: grid;
+    gap: 36px;
+  }
+  .num { font-variant-numeric: tabular-nums; }
+
+  header { display: grid; gap: 6px; }
+  .eyebrow { margin: 0; font-size: 13px; color: var(--muted); letter-spacing: 0.02em; }
+  h1 { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 30px; line-height: 1.25; text-wrap: balance; }
+  .lead { margin: 0; }
+  .meta { margin: 0; font-size: 13px; color: var(--muted); }
+  .jump { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .jump a { font-size: 13px; font-weight: 500; color: var(--accent); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 4px 11px; text-decoration: none; }
+  .jump a:hover { border-color: var(--accent); }
+
+  section { display: grid; gap: 12px; scroll-margin-top: 16px; }
+  h2 { margin: 0; font-size: 18px; font-weight: 700; line-height: 1.4; text-wrap: balance; }
+  .q { margin: 8px 0 0; font-size: 14px; font-weight: 500; color: var(--muted); }
+  .q span { font-weight: 400; }
+
+  .facts { list-style: none; margin: 0; padding: 0; display: grid; }
+  .fact { display: grid; grid-template-columns: 3.4rem minmax(0, 1fr); gap: 14px; padding: 16px 0; border-top: 1px solid var(--line); }
+  .fact:last-child { border-bottom: 1px solid var(--line); }
+  .big { display: grid; justify-items: center; align-content: start; padding-top: 2px; }
+  .big .of { font-size: 12px; color: var(--muted); }
+  .big .n { font-family: var(--font-display); font-weight: 600; font-size: 30px; line-height: 1.1; color: var(--accent); }
+  .big .u { font-size: 13px; font-weight: 500; color: var(--muted); }
+  .fact-body { min-width: 0; display: grid; gap: 4px; }
+  .fact-t { margin: 0; font-size: 16px; font-weight: 700; line-height: 1.45; text-wrap: balance; }
+  .fact-d { margin: 0; font-size: 14px; color: var(--muted); }
+
+  .key { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-size: 13px; color: var(--muted); }
+  .key > span { display: inline-flex; align-items: center; gap: 6px; }
+
+  .cells { display: flex; gap: 4px; }
+  .cells i { display: block; box-sizing: border-box; width: 16px; height: 16px; border-radius: 4px; background: var(--empty); }
+  .cells i.on, .cells i.k-know { background: var(--accent); }
+  .cells i.k-heard { background: var(--heard); }
+  .cells i.k-new { background: transparent; border: 1.5px dashed var(--dash); }
+
+  .bars { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .bar { display: grid; grid-template-columns: minmax(0, 1fr) auto 2.4rem; align-items: center; gap: 10px; }
+  .bar .label { font-size: 14.5px; line-height: 1.45; }
+  .bar.max .label { font-weight: 700; }
+  .bar .n { text-align: right; font-size: 14px; font-weight: 700; }
+  .bar.zero .label, .bar.zero .n { color: var(--muted); }
+
+  .know { list-style: none; margin: 0; padding: 0; display: grid; }
+  .know li { display: grid; gap: 6px; padding: 12px 0; border-top: 1px solid var(--line); }
+  .know li:last-child { border-bottom: 1px solid var(--line); }
+  .know .label { font-size: 14.5px; font-weight: 500; line-height: 1.45; }
+  .know .line { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+  .know .counts { font-size: 13px; color: var(--muted); }
+
+  .note { background: var(--accent-soft); border-radius: 12px; padding: 12px 14px; display: grid; gap: 2px; }
+  .note b { font-size: 13px; font-weight: 700; color: var(--accent); }
+  .note p { margin: 0; font-size: 14px; }
+
+  .decisions { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .decisions li { display: grid; grid-template-columns: 5.4rem minmax(0, 1fr); gap: 10px; align-items: baseline; }
+  .decisions .tag { justify-self: start; font-size: 12.5px; font-weight: 700; color: var(--accent); background: var(--accent-soft); border-radius: 999px; padding: 1px 9px; white-space: nowrap; }
+  .decisions p { margin: 0; min-width: 0; font-size: 14.5px; }
+
+  .links { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .links a { display: grid; gap: 2px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; color: var(--ink); text-decoration: none; }
+  .links a:hover { border-color: var(--accent); }
+  .links b { font-size: 16px; font-weight: 700; color: var(--accent); }
+  .links span { font-size: 14px; color: var(--muted); }
+
+  footer { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
+  footer p { margin: 0; }
+
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+  @media (max-width: 360px) {
+    .cells { gap: 3px; }
+    .cells i { width: 13px; height: 13px; border-radius: 3px; }
+    .decisions li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">AI 교실 · 사전 설문</p>
+    <h1>우리 반 설문 결과</h1>
+    <p class="lead">응답해 주신 다섯 분의 답을 이름 없이 숫자로만 모았습니다. 수업 내용과 일정은 이 결과를 보고 정했습니다.</p>
+    <p class="meta num">응답 5명 · 10월 24일 기준</p>
+    <nav class="jump" aria-label="바로 가기">
+      <a href="#use">써 본 경험</a>
+      <a href="#worry">걱정</a>
+      <a href="#know">보안 상식</a>
+      <a href="#want">배우고 싶은 것</a>
+      <a href="#way">수업 방식</a>
+      <a href="#plan">일정</a>
+      <a href="#links">자료</a>
+    </nav>
+  </header>
+
+  <section aria-labelledby="glance-h">
+    <h2 id="glance-h">한눈에 보기</h2>
+    <ol class="facts">
+      <li class="fact">
+        <div class="big"><span class="of num">5명 중</span><span class="n num">4</span><span class="u">명</span></div>
+        <div class="fact-body"><p class="fact-t">개인정보 유출과 틀린 정보를 가장 걱정해요</p><p class="fact-d">1회차에서 내 정보 지키기와 답의 출처 확인을 배웁니다.</p></div>
+      </li>
+      <li class="fact">
+        <div class="big"><span class="of num">5명 중</span><span class="n num">3</span><span class="u">명</span></div>
+        <div class="fact-body"><p class="fact-t">업무에서는 엑셀과 발표 자료 기획을 가장 많이 골랐어요</p><p class="fact-d">2회차 업무 실습을 엑셀 → 발표 자료 기획 → 보고서 순서로 합니다.</p></div>
+      </li>
+      <li class="fact">
+        <div class="big"><span class="of num">5명 중</span><span class="n num">4</span><span class="u">명</span></div>
+        <div class="fact-body"><p class="fact-t">일상에서는 재테크·노후 준비를 가장 많이 골랐어요</p><p class="fact-d">2회차 일상 실습 7가지 가운데 하나로 연금 공부를 준비했습니다.</p></div>
+      </li>
+      <li class="fact">
+        <div class="big"><span class="of num">5명 중</span><span class="n num">5</span><span class="u">명</span></div>
+        <div class="fact-body"><p class="fact-t">모두 주말 수업을 골랐어요</p><p class="fact-d">토요일에 같은 내용을 1부·2부 두 번 합니다.</p></div>
+      </li>
+    </ol>
+  </section>
+
+  <p class="key"><span><span class="cells" aria-hidden="true"><i class="on"></i></span>그림의 한 칸이 한 사람입니다.</span><span>여러 개를 고르는 질문은 더하면 5명보다 많아요.</span></p>
+
+  <section id="use" aria-labelledby="use-h">
+    <h2 id="use-h">ChatGPT, 이렇게 써 왔어요</h2>
+    <p class="q">ChatGPT를 써 본 적이 있나요?</p>
+    <ul class="bars">
+    <li class="bar max"><span class="label">거의 매일 쓴다</span><span class="cells" role="img" aria-label="5명 중 3명"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span><span class="n num">3명</span></li>
+    <li class="bar"><span class="label">자주 쓴다(일주일에 1번 이상)</span><span class="cells" role="img" aria-label="5명 중 1명"><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="n num">1명</span></li>
+    <li class="bar zero"><span class="label">가끔 쓴다(한 달에 몇 번)</span><span class="cells" role="img" aria-label="5명 중 0명"><i></i><i></i><i></i><i></i><i></i></span><span class="n num">0명</span></li>
+    <li class="bar"><span class="label">몇 번 써 봤다</span><span class="cells" role="img" aria-label="5명 중 1명"><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="n num">1명</span></li>
+    <li class="bar zero"><span class="label">한 번도 안 써 봤다</span><span class="cells" role="img" aria-label="5명 중 0명"><i></i><i></i><i></i><i></i><i></i></span><span class="n num">0명</span></li>
+    </ul>
+    <p class="q">ChatGPT나 다른 AI로 해 본 것 <span>(모두 선택)</span></p>
+    <ul class="bars">
+    <li class="bar max"><span class="label">궁금한 것 묻기·검색</span><span class="cells" role="img" aria-label="5명 중 5명"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="n num">5명</span></li>
+    <li class="bar"><span class="label">사진이나 파일을 올려서 묻기</span><span class="cells" role="img" aria-label="5명 중 4명"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="n num">4명</span></li>
+    <li class="bar"><span class="label">이미지 만들기</span><span class="cells" role="img" aria-label="5명 중 4명"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="n num">4명</span></li>
+    <li class="bar"><span class="label">글쓰기·다듬기(메일·문서)</span><span class="cells" role="img" aria-label="5명 중 2명"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span><span class="n num">2명</span></li>
+    <li class="bar"><span class="label">프로젝트·GPT 같은 기능</span><span class="cells" role="img" aria-label="5명 중 2명"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span><span class="n num">2명</span></li>
+    <li class="bar"><span class="label">요약·번역</span><span class="cells" role="img" aria-label="5명 중 1명"><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="n num">1명</span></li>
+    <li class="bar"><span class="label">음성으로 대화하기</span><span class="cells" role="img" aria-label="5명 중 1명"><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="n num">1명</span></li>
+    </ul>
+    <div class="note"><b>수업에서는</b><p>모두 궁금한 것을 물어본 적이 있어요. 3회차에서는 사진·파일로 묻기, 이미지 만들기, 음성 대화를 한 단계 더 해 봅니다.</p></div>
+  </section>
+
+  <section id="worry" aria-labelledby="worry-h">
+    <h2 id="worry-h">걱정되는 것</h2>
+    <p class="q">AI를 쓸 때 가장 걱정되는 것 <span>(최대 3개)</span></p>
+    <ul class="bars">
+    <li class="bar max"><span class="label">개인정보 유출</span><span class="cells" role="img" aria-label="5명 중 4명"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="n num">4명</span></li>
+    <li class="bar max"><span class="label">틀린 정보를 사실처럼 말함</span><span class="cells" role="img" aria-label="5명 중 4명"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="n num">4명</span></li>
+    <li class="bar"><span class="label">회사 자료·기밀 유출</span><span class="cells" role="img" aria-label="5명 중 1명"><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="n num">1명</span></li>
+    <li class="bar"><span class="label">일자리 대체</span><span class="cells" role="img" aria-label="5명 중 1명"><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="n num">1명</span></li>
+    <li class="bar"><span class="label">AI 사기(가짜 목소리·영상)</span><span class="cells" role="img" aria-label="5명 중 1명"><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="n num">1명</span></li>
+    <li class="bar"><span class="label">저작권 문제</span><span class="cells" role="img" aria-label="5명 중 1명"><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="n num">1명</span></li>
+    </ul>
+    <div class="note"><b>수업에서는</b><p>1회차 ‘내 정보 지키기’에서 설정 5가지, 신호등 규칙, 가명처리, AI 사기를 배우고, ‘질문 잘하는 법’에서 답의 출처를 확인하는 법을 익힙니다. 저작권은 3회차 이미지 만들기에서 함께 살펴봅니다.</p></div>
+  </section>
+
+  <section id="know" aria-labelledby="know-h">
+    <h2 id="know-h">보안 상식, 얼마나 알고 있나요</h2>
+    <p class="key">
+      <span><span class="cells" aria-hidden="true"><i class="k-know"></i></span>잘 안다</span>
+      <span><span class="cells" aria-hidden="true"><i class="k-heard"></i></span>들어 봤다</span>
+      <span><span class="cells" aria-hidden="true"><i class="k-new"></i></span>처음 듣는다</span>
+    </p>
+    <ul class="know">
+    <li><span class="label">2단계 인증(인증 앱)</span><span class="line"><span class="cells" role="img" aria-label="잘 안다 1명, 들어 봤다 1명, 처음 듣는다 3명"><i class="k-know"></i><i class="k-heard"></i><i class="k-new"></i><i class="k-new"></i><i class="k-new"></i></span><span class="counts num">잘 안다 1 · 들어 봤다 1 · 처음 듣는다 3</span></span></li>
+    <li><span class="label">가짜 AI 앱·피싱 사이트 구별</span><span class="line"><span class="cells" role="img" aria-label="잘 안다 0명, 들어 봤다 2명, 처음 듣는다 3명"><i class="k-heard"></i><i class="k-heard"></i><i class="k-new"></i><i class="k-new"></i><i class="k-new"></i></span><span class="counts num">잘 안다 0 · 들어 봤다 2 · 처음 듣는다 3</span></span></li>
+    <li><span class="label">기록이 남지 않는 &#x27;임시 채팅&#x27;</span><span class="line"><span class="cells" role="img" aria-label="잘 안다 1명, 들어 봤다 3명, 처음 듣는다 1명"><i class="k-know"></i><i class="k-heard"></i><i class="k-heard"></i><i class="k-heard"></i><i class="k-new"></i></span><span class="counts num">잘 안다 1 · 들어 봤다 3 · 처음 듣는다 1</span></span></li>
+    <li><span class="label">대화 &#x27;공유 링크&#x27;는 누구나 볼 수 있다</span><span class="line"><span class="cells" role="img" aria-label="잘 안다 3명, 들어 봤다 1명, 처음 듣는다 1명"><i class="k-know"></i><i class="k-know"></i><i class="k-know"></i><i class="k-heard"></i><i class="k-new"></i></span><span class="counts num">잘 안다 3 · 들어 봤다 1 · 처음 듣는다 1</span></span></li>
+    <li><span class="label">사진 파일 속 장소 정보</span><span class="line"><span class="cells" role="img" aria-label="잘 안다 1명, 들어 봤다 3명, 처음 듣는다 1명"><i class="k-know"></i><i class="k-heard"></i><i class="k-heard"></i><i class="k-heard"></i><i class="k-new"></i></span><span class="counts num">잘 안다 1 · 들어 봤다 3 · 처음 듣는다 1</span></span></li>
+    <li><span class="label">대화가 AI 학습에 쓰일 수 있고 끌 수 있다</span><span class="line"><span class="cells" role="img" aria-label="잘 안다 2명, 들어 봤다 3명, 처음 듣는다 0명"><i class="k-know"></i><i class="k-know"></i><i class="k-heard"></i><i class="k-heard"></i><i class="k-heard"></i></span><span class="counts num">잘 안다 2 · 들어 봤다 3 · 처음 듣는다 0</span></span></li>
+    </ul>
+    <div class="note"><b>수업에서는</b><p>빈칸은 수업에서 함께 채웁니다. 처음 듣는 분이 많은 2단계 인증과 가짜 앱·피싱 사이트 구별은 1회차에서 가입하며 해 보고, 사진 속 장소 정보는 3회차에서 사진을 올리기 전에 점검합니다.</p></div>
+  </section>
+
+  <section id="want" aria-labelledby="want-h">
+    <h2 id="want-h">배우고 싶은 것</h2>
+    <p class="q">업무에서 써 보고 싶은 것 <span>(최대 3개)</span></p>
+    <ul class="bars">
+    <li class="bar max"><span class="label">엑셀·데이터 분석</span><span class="cells" role="img" aria-label="5명 중 3명"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span><span class="n num">3명</span></li>
+    <li class="bar max"><span class="label">발표 자료(PPT) 기획</span><span class="cells" role="img" aria-label="5명 중 3명"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span><span class="n num">3명</span></li>
+    <li class="bar"><span class="label">보고서·기획서 작성</span><span class="cells" role="img" aria-label="5명 중 2명"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span><span class="n num">2명</span></li>
+    <li class="bar"><span class="label">홍보 문구·SNS 글</span><span class="cells" role="img" aria-label="5명 중 2명"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span><span class="n num">2명</span></li>
+    <li class="bar"><span class="label">이메일·공문 작성</span><span class="cells" role="img" aria-label="5명 중 1명"><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="n num">1명</span></li>
+    <li class="bar"><span class="label">번역·외국어 업무</span><span class="cells" role="img" aria-label="5명 중 1명"><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="n num">1명</span></li>
+    <li class="bar"><span class="label">업무에는 쓰지 않을 것 같다</span><span class="cells" role="img" aria-label="5명 중 1명"><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="n num">1명</span></li>
+    </ul>
+    <div class="note"><b>2회차 업무 실습</b><p>많이 고른 엑셀 → 발표 자료 기획 → 보고서 순서로 15분씩 함께 해 봅니다. 이메일과 회의록 정리는 실습지로 드려요.</p></div>
+    <p class="q">일상에서 써 보고 싶은 것 <span>(최대 3개)</span></p>
+    <ul class="bars">
+    <li class="bar max"><span class="label">재테크·노후 준비</span><span class="cells" role="img" aria-label="5명 중 4명"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="n num">4명</span></li>
+    <li class="bar"><span class="label">외국어 회화 연습</span><span class="cells" role="img" aria-label="5명 중 2명"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span><span class="n num">2명</span></li>
+    <li class="bar"><span class="label">부모님 돌봄·생활 정보</span><span class="cells" role="img" aria-label="5명 중 2명"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span><span class="n num">2명</span></li>
+    <li class="bar"><span class="label">건강·운동·식단 정보</span><span class="cells" role="img" aria-label="5명 중 2명"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span><span class="n num">2명</span></li>
+    <li class="bar"><span class="label">취미(글쓰기·사진·음악)</span><span class="cells" role="img" aria-label="5명 중 2명"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span><span class="n num">2명</span></li>
+    <li class="bar"><span class="label">여행·일정 계획</span><span class="cells" role="img" aria-label="5명 중 1명"><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="n num">1명</span></li>
+    <li class="bar"><span class="label">이미지 만들기(초대장·포스터)</span><span class="cells" role="img" aria-label="5명 중 1명"><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="n num">1명</span></li>
+    <li class="bar"><span class="label">기타</span><span class="cells" role="img" aria-label="5명 중 1명"><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="n num">1명</span></li>
+    </ul>
+    <div class="note"><b>2회차 일상 실습</b><p>재테크·노후 공부, 건강검진 결과 읽기, 식단, 운동, 취미 등 7가지 중 2개를 골라 해 봅니다. 외국어 회화는 3회차 음성 대화에서 여행 영어로 연습해요.</p></div>
+    <p class="q">3회차에 만들고 싶은 한 페이지</p>
+    <ul class="bars">
+    <li class="bar max"><span class="label">아직 모르겠다(강사 추천)</span><span class="cells" role="img" aria-label="5명 중 3명"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span><span class="n num">3명</span></li>
+    <li class="bar"><span class="label">독서·여행·취미 기록장</span><span class="cells" role="img" aria-label="5명 중 1명"><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="n num">1명</span></li>
+    <li class="bar"><span class="label">나를 소개하는 명함 페이지</span><span class="cells" role="img" aria-label="5명 중 1명"><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="n num">1명</span></li>
+    </ul>
+    <div class="note"><b>3회차</b><p>별명, 한 줄 소개, 좋아하는 것 3가지로 내 페이지를 만듭니다. 아직 정하지 못했어도 괜찮아요.</p></div>
+  </section>
+
+  <section id="way" aria-labelledby="way-h">
+    <h2 id="way-h">바라는 수업 방식</h2>
+    <p class="q">수업 진행에서 바라는 점 <span>(모두 선택)</span></p>
+    <ul class="bars">
+    <li class="bar max"><span class="label">천천히 한 단계씩</span><span class="cells" role="img" aria-label="5명 중 5명"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="n num">5명</span></li>
+    <li class="bar"><span class="label">수업 뒤 다시 볼 요약 자료</span><span class="cells" role="img" aria-label="5명 중 4명"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="n num">4명</span></li>
+    <li class="bar"><span class="label">따라 할 단계별 인쇄물</span><span class="cells" role="img" aria-label="5명 중 3명"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span><span class="n num">3명</span></li>
+    <li class="bar"><span class="label">실습 시간 넉넉히</span><span class="cells" role="img" aria-label="5명 중 3명"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span><span class="n num">3명</span></li>
+    <li class="bar"><span class="label">쉬는 시간 자주</span><span class="cells" role="img" aria-label="5명 중 1명"><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="n num">1명</span></li>
+    </ul>
+    <div class="note"><b>수업에서는</b><p>설명 30%, 실습 70%로, 강사 화면을 보며 한 단계씩 따라 합니다.</p></div>
+  </section>
+
+  <section id="plan" aria-labelledby="plan-h">
+    <h2 id="plan-h">일정은 이렇게 정했어요</h2>
+    <ul class="decisions">
+      <li><span class="tag">2·3회차</span><p>5명 모두 주말을 골라 11월 7일과 11월 28일, 토요일에 합니다.</p></li>
+      <li><span class="tag">1부·2부</span><p>10월 31일에 올 수 있는 시간이 오전부터 저녁까지 저마다 달라서, 토요일 수업은 같은 내용을 1부(14:00~17:00)와 2부(19:00~22:00) 두 번 합니다.</p></li>
+      <li><span class="tag">보충 수업</span><p>일요일 저녁이 편하다는 분이 4명이라 일요일 저녁 8시에 구글 미트로 만납니다.</p></li>
+      <li><span class="tag">사전 미팅</span><p>10월 29일(목) 저녁 8시와 9시에 3명씩 가능해서 그날 두 번 엽니다.</p></li>
+      <li><span class="tag">화상회의</span><p>5명 모두 구글 미트로 참여할 수 있다고 답했어요.</p></li>
+    </ul>
+  </section>
+
+  <section id="links" aria-labelledby="links-h">
+    <h2 id="links-h">함께 보는 자료</h2>
+    <ul class="links">
+      <li><a href="schedule.html"><b>수업 일정</b><span>날짜·시간·준비물을 보고 내 캘린더에 추가할 수 있어요.</span></a></li>
+      <li><a href="https://docs.google.com/document/d/1jtyBsZ5p3raAU93jLJAtyoOYNW5qOPnjuDspoAfRkFo/edit?usp=sharing" target="_blank" rel="noopener"><b>강의 계획안</b><span>과정 소개, 회차별로 배우는 것, 준비물, 개인정보 약속이 있어요. 날짜는 수업 일정 페이지가 최신입니다.</span></a></li>
+      <li id="survey-link"><a href="https://docs.google.com/forms/d/e/1FAIpQLSdJbUTD-0EJvVyaGKw7U2A5U43UhWYZi6OuESCmS_gIje6gIQ/viewform" target="_blank" rel="noopener"><b>사전 설문</b><span>아직 응답하지 않았다면 10월 25일(일) 밤 12시까지 해 주세요.</span></a></li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>이 페이지에는 이름이 없습니다. 설문 응답 원본은 수업 준비에만 쓰고, 교육이 끝나고 한 달 안에 모두 지웁니다.</p>
+    <p class="num">AI 교실 · 2026년 10월 24일 기준</p>
+  </footer>
+</div>
+
+<script>
+  // 설문 마감(10월 25일 밤 12시, 한국 시간)이 지나면 설문 링크를 숨깁니다
+  (function () {
+    var li = document.getElementById('survey-link');
+    if (li && Date.now() >= Date.parse('2026-10-26T00:00:00+09:00')) li.hidden = true;
+  })();
+</script>
+</body>
+</html>

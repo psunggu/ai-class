@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}</style>
+<title>AI 교실 일정</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600&display=swap">
+<style>
+  /* 휴대폰 한 손 스크롤: 다음 일정 → 토요일 두 반 → 날짜순 일정과 준비물 → 안내 */
+  :root {
+    --bg: #FAF7F2;
+    --surface: #FFFFFF;
+    --ink: #1F2A37;
+    --muted: #5E6672;
+    --line: #E6DFD3;
+    --accent: #2A6F61;
+    --accent-soft: #EEF2EF;
+    --online: #46607A;
+    --online-soft: #EDF1F5;
+    --sun: #B4473A;
+    --font-body: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    --font-display: "Noto Serif KR", "AppleMyungjo", "Batang", serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15191E;
+      --surface: #1D2228;
+      --ink: #ECE7DF;
+      --muted: #A6ADB6;
+      --line: #2E353D;
+      --accent: #6DBBA9;
+      --accent-soft: #1E2D29;
+      --online: #9FB6CE;
+      --online-soft: #1E252E;
+      --sun: #E58C7F;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15191E;
+    --surface: #1D2228;
+    --ink: #ECE7DF;
+    --muted: #A6ADB6;
+    --line: #2E353D;
+    --accent: #6DBBA9;
+    --accent-soft: #1E2D29;
+    --online: #9FB6CE;
+    --online-soft: #1E252E;
+    --sun: #E58C7F;
+    color-scheme: dark;
+  }
+
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.65; word-break: keep-all; overflow-wrap: anywhere; }
+  .wrap {
+    max-width: 38rem;
+    margin: 0 auto;
+    padding-block: 28px 56px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: grid;
+    gap: 28px;
+  }
+  .num { font-variant-numeric: tabular-nums; }
+
+  header { display: grid; gap: 6px; }
+  .eyebrow { margin: 0; font-size: 13px; color: var(--muted); letter-spacing: 0.02em; }
+  h1 { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 30px; line-height: 1.25; text-wrap: balance; }
+  .lead { margin: 0; color: var(--muted); }
+
+  .next { background: var(--accent-soft); border-radius: 14px; padding: 18px 18px 16px; display: grid; gap: 6px; }
+  .next-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .next-label { font-size: 13px; font-weight: 500; color: var(--accent); }
+  .dday { font-size: 13px; font-weight: 700; color: var(--surface); background: var(--accent); border-radius: 999px; padding: 2px 10px; }
+  .next-title { margin: 0; font-size: 19px; font-weight: 700; line-height: 1.4; }
+  .next-when { margin: 0; color: var(--ink); }
+  .next-jump { justify-self: start; margin-top: 4px; font-size: 13px; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
+  .parts h2, .list h2, .notes h2 { margin: 0 0 10px; font-size: 17px; font-weight: 700; }
+  .part-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .part { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; display: grid; gap: 2px; }
+  .part b { font-size: 13px; font-weight: 500; color: var(--muted); }
+  .part span { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+  .parts p { margin: 10px 0 0; color: var(--muted); font-size: 14px; }
+
+  .timeline { list-style: none; margin: 0; padding: 0; display: grid; }
+  .event { display: grid; grid-template-columns: 3.4rem minmax(0, 1fr); gap: 14px; padding: 18px 0; border-top: 1px solid var(--line); scroll-margin-top: 16px; }
+  .event:last-child { border-bottom: 1px solid var(--line); }
+  .date { display: grid; justify-items: center; align-content: start; gap: 0; padding-top: 2px; }
+  .date .m { font-size: 12px; color: var(--muted); }
+  .date .d { font-family: var(--font-display); font-weight: 600; font-size: 28px; line-height: 1.1; }
+  .date .w { font-size: 13px; font-weight: 500; color: var(--muted); }
+  .date .w.sat { color: var(--accent); }
+  .date .w.sun { color: var(--sun); }
+  .body { min-width: 0; display: grid; gap: 6px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { font-size: 12px; font-weight: 500; border-radius: 999px; padding: 1px 9px; }
+  .tag.off { color: var(--accent); background: var(--accent-soft); }
+  .tag.on { color: var(--online); background: var(--online-soft); }
+  .tag.state { color: var(--muted); border: 1px solid var(--line); }
+  .event h3 { margin: 0; font-size: 17px; font-weight: 700; line-height: 1.45; text-wrap: balance; }
+  .times { margin: 0; display: flex; flex-wrap: wrap; gap: 4px 14px; font-weight: 500; }
+  .desc { margin: 0; color: var(--muted); font-size: 14px; }
+  .prep { margin: 2px 0 0; padding: 10px 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; font-size: 14px; display: grid; gap: 4px; }
+  .prep b { font-size: 13px; color: var(--muted); font-weight: 500; }
+  .prep ul { margin: 0; padding-left: 1.1em; display: grid; gap: 2px; }
+  .cal { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .cal a { font-size: 13px; font-weight: 500; color: var(--accent); border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 5px 12px; text-decoration: none; }
+  .cal a:hover { border-color: var(--accent); }
+  .event.is-past { opacity: 0.5; }
+  .event.is-next .d { color: var(--accent); }
+  .event.is-next h3::after { content: "다음 일정"; margin-left: 8px; font-size: 12px; font-weight: 700; color: var(--surface); background: var(--accent); border-radius: 999px; padding: 1px 8px; vertical-align: 2px; white-space: nowrap; }
+
+  .notes ul { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; color: var(--muted); font-size: 14px; }
+  footer { font-size: 13px; color: var(--muted); }
+
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+  @media (max-width: 360px) {
+    .part span { font-size: 19px; }
+    .event { grid-template-columns: 2.9rem minmax(0, 1fr); gap: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">AI 교실 · ChatGPT 교육</p>
+    <h1>수업 일정</h1>
+    <p class="lead">10월 29일부터 12월 6일까지 오프라인 수업 3번과 구글 미트 모임 4번이 있습니다.</p>
+  </header>
+
+  <section class="next" id="next" aria-live="polite">
+    <div class="next-top">
+      <span class="next-label">다음 일정</span>
+      <span class="dday num" id="next-dday" hidden></span>
+    </div>
+    <p class="next-title" id="next-title">사전 온라인 미팅</p>
+    <p class="next-when num" id="next-when">10월 29일(목) 저녁 8시 또는 9시 · 구글 미트</p>
+    <a class="next-jump" id="next-jump" href="#e-meeting">자세히 보기</a>
+  </section>
+
+  <section class="parts" aria-labelledby="parts-h">
+    <h2 id="parts-h">토요일 수업은 같은 내용을 두 번 합니다</h2>
+    <div class="part-row">
+      <div class="part"><b>1부</b><span class="num">14:00~17:00</span></div>
+      <div class="part"><b>2부</b><span class="num">19:00~22:00</span></div>
+    </div>
+    <p>내 반은 사전 미팅에서 알려 드립니다. 사정이 생긴 날은 단톡방에 미리 알리고 다른 반으로 오셔도 됩니다.</p>
+  </section>
+
+  <section class="list" aria-labelledby="list-h">
+    <h2 id="list-h">전체 일정</h2>
+    <ol class="timeline">
+      <li class="event" id="e-meeting" data-label="사전 온라인 미팅" data-when="10월 29일(목) 저녁 8시 또는 9시 · 구글 미트" data-start="2026-10-29T20:00:00+09:00" data-end="2026-10-29T21:40:00+09:00">
+        <div class="date"><span class="m">10월</span><span class="d num">29</span><span class="w">목</span></div>
+        <div class="body">
+          <div class="tags"><span class="tag on">구글 미트</span></div>
+          <h3>사전 온라인 미팅</h3>
+          <p class="times num"><span>저녁 8:00~8:40</span><span>또는 9:00~9:40</span></p>
+          <p class="desc">같은 내용을 두 번 하니 편한 시간에 한 번 들어오세요. 설문 결과와 확정 일정, 내 반을 알려 드리고 구글 미트 접속도 연습합니다.</p>
+          <div class="prep"><b>준비</b><ul><li>조용한 곳, 이어폰이 있으면 좋아요</li></ul></div>
+          <div class="cal"><a data-cal="20261029T200000/20261029T204000" data-title="AI 교실 사전 미팅 (구글 미트)" target="_blank" rel="noopener" href="https://calendar.google.com/calendar/">캘린더에 추가 · 8시</a><a data-cal="20261029T210000/20261029T214000" data-title="AI 교실 사전 미팅 (구글 미트)" target="_blank" rel="noopener" href="https://calendar.google.com/calendar/">캘린더에 추가 · 9시</a></div>
+        </div>
+      </li>
+
+      <li class="event" id="e-class1" data-label="1회차 · ChatGPT 첫걸음, 안전하게 시작하기" data-when="10월 31일(토) 1부 14:00 · 2부 19:00 · 오프라인" data-start="2026-10-31T14:00:00+09:00" data-end="2026-10-31T22:00:00+09:00">
+        <div class="date"><span class="m">10월</span><span class="d num">31</span><span class="w sat">토</span></div>
+        <div class="body">
+          <div class="tags"><span class="tag off">오프라인</span></div>
+          <h3>1회차 · ChatGPT 첫걸음, 안전하게 시작하기</h3>
+          <p class="times num"><span>1부 14:00~17:00</span><span>2부 19:00~22:00</span></p>
+          <p class="desc">ChatGPT가 무엇인지 알고, 안전하게 가입하고 잠그는 법, 개인정보를 지키는 설정, 질문 잘하는 법을 배웁니다.</p>
+          <div class="prep"><b>준비물</b><ul><li>노트북(있으면), 스마트폰, 충전기</li><li>구글 계정 비밀번호와 휴대폰 앱스토어 비밀번호를 미리 확인해 오세요</li><li>ChatGPT 앱과 인증 앱은 아직 설치하지 마세요. 수업에서 함께 설치합니다</li></ul></div>
+          <div class="cal"><a data-cal="20261031T140000/20261031T170000" data-title="AI 교실 1회차 1부" target="_blank" rel="noopener" href="https://calendar.google.com/calendar/">캘린더에 추가 · 1부</a><a data-cal="20261031T190000/20261031T220000" data-title="AI 교실 1회차 2부" target="_blank" rel="noopener" href="https://calendar.google.com/calendar/">캘린더에 추가 · 2부</a></div>
+        </div>
+      </li>
+
+      <li class="event" id="e-class2" data-label="2회차 · 업무·일상·전문분야에 바로 쓰기" data-when="11월 7일(토) 1부 14:00 · 2부 19:00 · 오프라인" data-start="2026-11-07T14:00:00+09:00" data-end="2026-11-07T22:00:00+09:00">
+        <div class="date"><span class="m">11월</span><span class="d num">7</span><span class="w sat">토</span></div>
+        <div class="body">
+          <div class="tags"><span class="tag off">오프라인</span></div>
+          <h3>2회차 · 업무·일상·전문분야에 바로 쓰기</h3>
+          <p class="times num"><span>1부 14:00~17:00</span><span>2부 19:00~22:00</span></p>
+          <p class="desc">질문을 더 잘하는 다섯 가지 방법을 익히고, 일과 생활 실습을 한 뒤 프로젝트로 나만의 비서를 만듭니다.</p>
+          <div class="prep"><b>준비물</b><ul><li>노트북(권장), 스마트폰, 충전기</li><li>1회차 과제인 보안 설정을 마치고 오세요. 시작할 때 함께 확인합니다</li><li>내 일의 고민 한 가지를 이름·회사명은 빼고 메모해 오세요</li></ul></div>
+          <div class="cal"><a data-cal="20261107T140000/20261107T170000" data-title="AI 교실 2회차 1부" target="_blank" rel="noopener" href="https://calendar.google.com/calendar/">캘린더에 추가 · 1부</a><a data-cal="20261107T190000/20261107T220000" data-title="AI 교실 2회차 2부" target="_blank" rel="noopener" href="https://calendar.google.com/calendar/">캘린더에 추가 · 2부</a></div>
+        </div>
+      </li>
+
+      <li class="event" id="e-supp1" data-label="보충 ① 2회차 질문과 보안 설정 마무리" data-when="11월 15일(일) 저녁 8:00~8:50 · 구글 미트" data-start="2026-11-15T20:00:00+09:00" data-end="2026-11-15T20:50:00+09:00">
+        <div class="date"><span class="m">11월</span><span class="d num">15</span><span class="w sun">일</span></div>
+        <div class="body">
+          <div class="tags"><span class="tag on">구글 미트</span></div>
+          <h3>보충 ① 2회차 질문과 보안 설정 마무리</h3>
+          <p class="times num"><span>저녁 8:00~8:50</span></p>
+          <p class="desc">2회차 과제를 하다 막힌 곳을 묻고, 아직 못 끝낸 보안 설정을 함께 마무리합니다.</p>
+          <div class="cal"><a data-cal="20261115T200000/20261115T205000" data-title="AI 교실 보충 ① (구글 미트)" target="_blank" rel="noopener" href="https://calendar.google.com/calendar/">캘린더에 추가</a></div>
+        </div>
+      </li>
+
+      <li class="event" id="e-supp2" data-label="보충 ② 휴대폰 앱 점검" data-when="11월 22일(일) 저녁 8:00~8:50 · 구글 미트" data-start="2026-11-22T20:00:00+09:00" data-end="2026-11-22T20:50:00+09:00">
+        <div class="date"><span class="m">11월</span><span class="d num">22</span><span class="w sun">일</span></div>
+        <div class="body">
+          <div class="tags"><span class="tag on">구글 미트</span></div>
+          <h3>보충 ② 휴대폰 앱 점검</h3>
+          <p class="times num"><span>저녁 8:00~8:50</span></p>
+          <p class="desc">3회차 준비 시간입니다. 휴대폰 ChatGPT 앱 로그인과 카메라·마이크 허용을 확인하고, 음성 대화와 이미지 만들기를 맛봅니다.</p>
+          <div class="prep"><b>준비</b><ul><li>휴대폰(ChatGPT 앱에 로그인), 이어폰</li></ul></div>
+          <div class="cal"><a data-cal="20261122T200000/20261122T205000" data-title="AI 교실 보충 ② (구글 미트)" target="_blank" rel="noopener" href="https://calendar.google.com/calendar/">캘린더에 추가</a></div>
+        </div>
+      </li>
+
+      <li class="event" id="e-class3" data-label="3회차 · 보고, 그리고, 말하는 ChatGPT" data-when="11월 28일(토) 1부 14:00 · 2부 19:00 · 오프라인" data-start="2026-11-28T14:00:00+09:00" data-end="2026-11-28T22:00:00+09:00">
+        <div class="date"><span class="m">11월</span><span class="d num">28</span><span class="w sat">토</span></div>
+        <div class="body">
+          <div class="tags"><span class="tag off">오프라인</span><span class="tag state">수료</span></div>
+          <h3>3회차 · 보고, 그리고, 말하는 ChatGPT</h3>
+          <p class="times num"><span>1부 14:00~17:00</span><span>2부 19:00~22:00</span></p>
+          <p class="desc">사진·파일로 묻기, 이미지 만들기, 음성 대화, 검색과 사실 확인을 해 보고 나를 소개하는 한 페이지를 만듭니다. 끝나면 수료합니다.</p>
+          <div class="prep"><b>준비물</b><ul><li>노트북과 충전기, 휴대폰, 이어폰(꼭 가져오세요)</li><li>물어볼 사진 1~2장: 설명서·메뉴판·안내문처럼 개인정보가 없는 것</li><li>내 페이지 메모: 별명, 한 줄 소개, 좋아하는 것 3가지</li></ul></div>
+          <div class="cal"><a data-cal="20261128T140000/20261128T170000" data-title="AI 교실 3회차 1부" target="_blank" rel="noopener" href="https://calendar.google.com/calendar/">캘린더에 추가 · 1부</a><a data-cal="20261128T190000/20261128T220000" data-title="AI 교실 3회차 2부" target="_blank" rel="noopener" href="https://calendar.google.com/calendar/">캘린더에 추가 · 2부</a></div>
+        </div>
+      </li>
+
+      <li class="event" id="e-supp3" data-label="보충 ③ 내 페이지 마무리 (선택)" data-when="12월 6일(일) 저녁 8:00~8:50 · 구글 미트" data-start="2026-12-06T20:00:00+09:00" data-end="2026-12-06T20:50:00+09:00">
+        <div class="date"><span class="m">12월</span><span class="d num">6</span><span class="w sun">일</span></div>
+        <div class="body">
+          <div class="tags"><span class="tag on">구글 미트</span><span class="tag state">선택</span></div>
+          <h3>보충 ③ 내 페이지 마무리</h3>
+          <p class="times num"><span>저녁 8:00~8:50</span></p>
+          <p class="desc">원하는 분만 오세요. 내 페이지를 마무리하고 다음에 무엇을 배울지 함께 이야기합니다.</p>
+          <div class="cal"><a data-cal="20261206T200000/20261206T205000" data-title="AI 교실 보충 ③ (구글 미트)" target="_blank" rel="noopener" href="https://calendar.google.com/calendar/">캘린더에 추가</a></div>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="notes" aria-labelledby="notes-h">
+    <h2 id="notes-h">알아 두세요</h2>
+    <ul>
+      <li>장소와 구글 미트 링크는 단톡방으로 보내 드립니다.</li>
+      <li>구글 미트는 노트북이면 크롬에서, 휴대폰이면 'Google Meet' 앱을 설치한 뒤 링크를 누르면 들어옵니다.</li>
+      <li>구글 미트 모임은 녹화하지 않습니다.</li>
+      <li>시간은 모두 한국 시간입니다. 일정이 바뀌면 이 페이지를 고쳐 둡니다.</li>
+    </ul>
+  </section>
+
+  <footer>AI 교실 · 2026년 10~12월</footer>
+</div>
+
+<script>
+  (function () {
+    var events = Array.prototype.slice.call(document.querySelectorAll('.event'));
+    var details = '자세한 안내는 AI 교실 단톡방을 확인해 주세요.';
+
+    // 구글 캘린더 '일정 추가' 화면 링크 (한국 시간 기준)
+    document.querySelectorAll('.cal a[data-cal]').forEach(function (a) {
+      a.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+        + '&text=' + encodeURIComponent(a.dataset.title)
+        + '&dates=' + a.dataset.cal
+        + '&ctz=Asia%2FSeoul'
+        + '&details=' + encodeURIComponent(details);
+    });
+
+    // 오늘 날짜(한국 시간)를 YYYY-MM-DD로
+    function kstDay(ms) {
+      try {
+        return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(ms));
+      } catch (e) {
+        return new Date(ms + 9 * 3600000).toISOString().slice(0, 10);
+      }
+    }
+    function dayDiff(a, b) {
+      return Math.round((Date.parse(b + 'T00:00:00Z') - Date.parse(a + 'T00:00:00Z')) / 86400000);
+    }
+
+    var now = Date.now();
+    var next = null;
+    events.forEach(function (li) {
+      var end = Date.parse(li.dataset.end);
+      if (end <= now) {
+        li.classList.add('is-past');
+        var tags = li.querySelector('.tags');
+        var t = document.createElement('span');
+        t.className = 'tag state';
+        t.textContent = '지난 일정';
+        tags.appendChild(t);
+      } else if (!next) {
+        next = li;
+      }
+    });
+
+    var box = document.getElementById('next');
+    var title = document.getElementById('next-title');
+    var when = document.getElementById('next-when');
+    var dday = document.getElementById('next-dday');
+    var jump = document.getElementById('next-jump');
+    if (!next) {
+      document.querySelector('.next-label').textContent = '모든 일정이 끝났습니다';
+      title.textContent = '함께해 주셔서 고맙습니다';
+      when.textContent = '사후 설문과 다음 학습 안내는 단톡방에서 확인해 주세요.';
+      jump.hidden = true;
+      return;
+    }
+    next.classList.add('is-next');
+    title.textContent = next.dataset.label;
+    when.textContent = next.dataset.when;
+    jump.href = '#' + next.id;
+    var start = Date.parse(next.dataset.start);
+    var diff = dayDiff(kstDay(now), kstDay(start));
+    dday.textContent = start <= now ? '진행 중' : diff === 0 ? '오늘' : diff === 1 ? '내일' : 'D-' + diff;
+    dday.hidden = false;
+    box.setAttribute('aria-label', '다음 일정: ' + next.dataset.label);
+  })();
+</script>
+</body>
+</html>
